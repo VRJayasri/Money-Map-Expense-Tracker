@@ -2,6 +2,7 @@ import {
   BadgeIndianRupee,
   Birdhouse,
   Bus,
+  ChevronDown,
   HandCoins,
   Handshake,
   HouseHeart,
@@ -12,11 +13,12 @@ import {
 import Card from "./ui/Card";
 import type { Expense } from "../types/Plans";
 
-interface BudgetCardProps {
+interface PlanCardProps {
   title: string;
   balanceLabel: string;
   balanceValue: string;
   expenses: Expense[];
+  headerRight?: React.ReactNode; // 👈 customizable header
 }
 
 const ExpenseItem: React.FC<{ expense: Expense }> = ({ expense }) => (
@@ -31,22 +33,21 @@ const ExpenseItem: React.FC<{ expense: Expense }> = ({ expense }) => (
   </div>
 );
 
-const BudgetCard: React.FC<BudgetCardProps> = ({
+const PlanCard: React.FC<PlanCardProps> = ({
   title,
   balanceLabel,
   balanceValue,
   expenses,
+  headerRight,
 }) => (
   <Card>
     {/* Header */}
-    <h2 className="text-lg font-semibold text-[rgb(78,52,46)] mb-4 flex items-center gap-2">
-      {title}
-      <span className="cursor-pointer hover:text-yellow-500">
-        <Pencil className="w-4 h-4" />
-      </span>
+    <h2 className="text-lg font-semibold text-[rgb(78,52,46)] mb-4 flex items-center justify-between">
+      <span>{title}</span>
+      {headerRight}
     </h2>
 
-    {/* Balance/Income */}
+    {/* Balance */}
     <div className="mb-5 p-3 bg-white rounded-lg shadow-sm">
       <p className="text-xs text-gray-500">{balanceLabel}</p>
       <p className="text-2xl font-bold text-green-700">{balanceValue}</p>
@@ -59,7 +60,7 @@ const BudgetCard: React.FC<BudgetCardProps> = ({
       ))}
     </div>
 
-    {/* Footer Balance */}
+    {/* Footer */}
     <div className="border-t mt-5 pt-4 flex justify-between font-semibold">
       <span>{balanceLabel === "Income" ? "Balance" : "Total Spend"}</span>
       <span className="text-green-600">₹XXXX</span>
@@ -92,22 +93,34 @@ const BudgetPlan = () => {
 
   return (
     <div className="p-6 space-y-6">
-      <div className="w-full bg-yellow-100/70 rounded-none shadow p-4">
-        <h4 className="text-xl font-semibold text-left text-gray-900">Plan</h4>
+      <div className="w-full bg-yellow-100/70 shadow p-4">
+        <h4 className="text-xl font-semibold text-gray-900">Plan</h4>
       </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <BudgetCard
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <PlanCard
           title="Monthly Plan"
           balanceLabel="Income"
           balanceValue="₹8000"
           expenses={monthlyExpenses}
+          headerRight={
+            <button className="hover:text-yellow-500">
+              <Pencil className="w-4 h-4" />
+            </button>
+          }
         />
-        <BudgetCard
-          title="Actual done"
+
+        <PlanCard
+          title="Actual Done"
           balanceLabel="Balance"
           balanceValue="₹2000"
           expenses={actualExpenses}
+          headerRight={
+            <div className="flex items-center gap-2 text-sm cursor-pointer">
+              <span> January</span>
+              <ChevronDown className="w-4 h-4" />
+            </div>
+          }
         />
       </div>
     </div>
