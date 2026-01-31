@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ChartPie, House, Menu, Settings } from "lucide-react";
 
 const SideNav = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <aside

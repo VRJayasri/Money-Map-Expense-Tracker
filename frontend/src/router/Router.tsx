@@ -16,6 +16,10 @@ const router = createBrowserRouter([
         path: "statistics",
         element: <Statistics />,
       },
+      {
+        path: "settings",
+        element: <Statistics />,
+      },
     ],
   },
 ]);

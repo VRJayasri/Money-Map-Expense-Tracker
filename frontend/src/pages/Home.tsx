@@ -5,10 +5,9 @@ const Home = () => {
   return (
     <div>
       <Dashboard />
-      <div className="p-6 bg-yellow-200 space-y-6">
-        {/* Header */}
-        <BudgetPlan />
-      </div>
+
+      {/* Header */}
+      <BudgetPlan />
     </div>
   );
 };
