@@ -8,7 +8,7 @@ const Header = () => {
           onClick={() => window.location.reload()}
           className="cursor-pointer hover:opacity-80 transition text-[rgb(225,255,240)] "
         >
-          Money tracker
+          Tracker
         </button>
       </div>
     </header>

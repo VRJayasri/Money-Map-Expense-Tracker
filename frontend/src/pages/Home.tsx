@@ -5,8 +5,6 @@ const Home = () => {
   return (
     <div>
       <Dashboard />
-
-      {/* Header */}
       <BudgetPlan />
     </div>
   );

@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
 import MainLayout from "../layout/Main";
+import AddExpense from "../pages/AddExpense";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
         path: "statistics",
         element: <Statistics />,
       },
+      { path: "/add-expense", element: <AddExpense /> },
       {
         path: "settings",
         element: <Statistics />,
