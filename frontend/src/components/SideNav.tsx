@@ -2,8 +2,13 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { ChartPie, House, Menu, Settings } from "lucide-react";
 
-const SideNav = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface SideNavProps {
+  defaultOpen?: boolean;
+  isMobile?: boolean;
+}
+
+const SideNav = ({ isMobile = false }: SideNavProps) => {
+  const [isOpen, setIsOpen] = useState(isMobile);
 
   return (
     <aside
@@ -11,10 +16,7 @@ const SideNav = () => {
         isOpen ? "w-56" : "w-20"
       }`}
     >
-      {/* Top Section */}
       <div className="flex items-center justify-between mb-10">
-        {/* {isOpen && <h2 className="text-lg font-semibold">Menu</h2>} */}
-
         <button onClick={() => setIsOpen(!isOpen)}>
           <Menu />
         </button>

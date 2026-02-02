@@ -2,7 +2,6 @@ import {
   BadgeIndianRupee,
   Birdhouse,
   Bus,
-  ChevronDown,
   HandCoins,
   Handshake,
   HouseHeart,
@@ -12,13 +11,15 @@ import {
 } from "lucide-react";
 import Card from "./ui/Card";
 import type { Expense } from "../types/Plans";
+import MonthDropdown from "./MonthSelector";
+import { useState } from "react";
 
 interface PlanCardProps {
   title: string;
   balanceLabel: string;
   balanceValue: string;
   expenses: Expense[];
-  headerRight?: React.ReactNode; // 👈 customizable header
+  headerRight?: React.ReactNode;
 }
 
 const ExpenseItem: React.FC<{ expense: Expense }> = ({ expense }) => (
@@ -69,6 +70,11 @@ const PlanCard: React.FC<PlanCardProps> = ({
 );
 
 const BudgetPlan = () => {
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
+  });
+  const [month, setMonth] = useState(currentMonth);
+
   const monthlyExpenses: Expense[] = [
     { icon: <Utensils />, label: "Food", value: "₹500" },
     { icon: <Bus />, label: "Travel", value: "₹1,000" },
@@ -117,8 +123,7 @@ const BudgetPlan = () => {
           expenses={actualExpenses}
           headerRight={
             <div className="flex items-center gap-2 text-sm cursor-pointer">
-              <span> January</span>
-              <ChevronDown className="w-4 h-4" />
+              <MonthDropdown value={month} onChange={setMonth} />
             </div>
           }
         />
