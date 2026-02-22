@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { ChartPie, House, Menu, Settings } from "lucide-react";
+import { Calculator, ChartPie, House, Menu, Settings } from "lucide-react";
 
 interface SideNavProps {
   defaultOpen?: boolean;
@@ -50,6 +50,19 @@ const SideNav = ({ isMobile = false }: SideNavProps) => {
         >
           <ChartPie />
           {isOpen && <span>Statistics</span>}
+        </NavLink>
+        <NavLink
+          to="/planner"
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-3 py-2 rounded ${
+              isActive
+                ? "bg-[rgb(215,204,200)] text-black"
+                : "hover:bg-[rgb(215,204,200)] hover:text-black"
+            }`
+          }
+        >
+          <Calculator />
+          {isOpen && <span>Calculator</span>}
         </NavLink>
 
         <NavLink
