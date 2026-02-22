@@ -3,6 +3,7 @@ import Home from "../pages/Home";
 import Statistics from "../pages/Statistics";
 import MainLayout from "../layout/Main";
 import AddExpense from "../pages/AddExpense";
+import AddInvest from "../pages/AddInvest";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
         element: <Statistics />,
       },
       { path: "/add-expense", element: <AddExpense /> },
+      { path: "/add-invest", element: <AddInvest /> },
       {
         path: "settings",
         element: <Statistics />,

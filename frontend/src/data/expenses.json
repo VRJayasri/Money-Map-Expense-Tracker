@@ -1,58 +1,65 @@
 [
   {
-    "id": 1,
-    "category": "Food",
-    "amount": 450,
-    "notes": "Lunch with friends",
-    "payment": "in hand",
-    "createdAt": "2026-02-02"
+    "income": 15000
   },
   {
-    "id": 2,
-    "category": "Travel",
-    "amount": 1200,
-    "notes": "Bus and auto fare",
-    "payment": "online",
-    "createdAt": "2026-02-01"
-  },
-  {
-    "id": 3,
-    "category": "Accessories",
-    "amount": 899,
-    "notes": "Phone case and cable",
-    "payment": "online",
-    "createdAt": "2026-01-30"
-  },
-  {
-    "id": 4,
-    "category": "Friends loan",
-    "amount": 2000,
-    "notes": "Loan given to Arun",
-    "payment": "in hand",
-    "createdAt": "2026-01-28"
-  },
-  {
-    "id": 5,
-    "category": "Rent",
-    "amount": 8500,
-    "notes": "February house rent",
-    "payment": "online",
-    "createdAt": "2026-02-01"
-  },
-  {
-    "id": 6,
-    "category": "Savings",
-    "amount": 3000,
-    "notes": "Monthly savings",
-    "payment": "online",
-    "createdAt": "2026-02-02"
-  },
-  {
-    "id": 7,
-    "category": "Investment",
-    "amount": 5000,
-    "notes": "Mutual fund SIP",
-    "payment": "online",
-    "createdAt": "2026-02-02"
+    "expenses": [
+      {
+        "id": 1,
+        "category": "Food",
+        "amount": 500,
+        "notes": "Lunch with friends",
+        "payment": "in hand",
+        "createdAt": "2026-02-02"
+      },
+      {
+        "id": 2,
+        "category": "Travel",
+        "amount": 1200,
+        "notes": "Bus and auto fare",
+        "payment": "online",
+        "createdAt": "2026-02-01"
+      },
+      {
+        "id": 3,
+        "category": "Accessories",
+        "amount": 899,
+        "notes": "Phone case and cable",
+        "payment": "online",
+        "createdAt": "2026-01-30"
+      },
+      {
+        "id": 4,
+        "category": "Friends loan",
+        "amount": 2000,
+        "notes": "Loan given to Arun",
+        "payment": "in hand",
+        "createdAt": "2026-01-28"
+      },
+      {
+        "id": 5,
+        "category": "Rent",
+        "amount": 8500,
+        "notes": "February house rent",
+        "payment": "online",
+        "createdAt": "2026-02-01"
+      },
+      {
+        "id": 6,
+        "category": "Savings",
+        "amount": 3000,
+        "notes": "Monthly savings",
+        "payment": "online",
+        "createdAt": "2026-02-02"
+      },
+      {
+        "id": 7,
+        "category": "Investment",
+        "amount": 5000,
+        "notes": "Mutual fund SIP",
+        "payment": "online",
+        "createdAt": "2026-02-02"
+      }
+    ]
   }
 ]

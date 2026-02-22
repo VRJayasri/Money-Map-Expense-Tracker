@@ -20,6 +20,8 @@ interface PlanCardProps {
   balanceValue: string;
   expenses: Expense[];
   headerRight?: React.ReactNode;
+  footerField: string;
+  footerValue: number;
 }
 
 const ExpenseItem: React.FC<{ expense: Expense }> = ({ expense }) => (
@@ -40,6 +42,8 @@ const PlanCard: React.FC<PlanCardProps> = ({
   balanceValue,
   expenses,
   headerRight,
+  footerField,
+  footerValue,
 }) => (
   <Card>
     {/* Header */}
@@ -63,8 +67,8 @@ const PlanCard: React.FC<PlanCardProps> = ({
 
     {/* Footer */}
     <div className="border-t mt-5 pt-4 flex justify-between font-semibold">
-      <span>{balanceLabel === "Income" ? "Balance" : "Total Spend"}</span>
-      <span className="text-green-600">₹XXXX</span>
+      <span>{footerField}</span>
+      <span className="text-green-600">{footerValue}</span>
     </div>
   </Card>
 );
@@ -107,7 +111,9 @@ const BudgetPlan = () => {
         <PlanCard
           title="Monthly Plan"
           balanceLabel="Income"
-          balanceValue="₹8000"
+          balanceValue="₹25000"
+          footerField="Income"
+          footerValue={25000}
           expenses={monthlyExpenses}
           headerRight={
             <button className="hover:text-yellow-500">
@@ -119,7 +125,9 @@ const BudgetPlan = () => {
         <PlanCard
           title="Actual Done"
           balanceLabel="Balance"
-          balanceValue="₹2000"
+          balanceValue="₹3750"
+          footerValue={21250}
+          footerField="Total"
           expenses={actualExpenses}
           headerRight={
             <div className="flex items-center gap-2 text-sm cursor-pointer">
