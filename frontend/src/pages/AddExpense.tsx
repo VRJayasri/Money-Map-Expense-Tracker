@@ -1,12 +1,8 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-type FormErrors = {
-  category?: string;
-  amount?: string;
-  paymentMethod?: string;
-};
+import { api } from "../api";
+import type { FormErrors } from "../types/Plans";
 
 const categories = [
   "Food",
@@ -16,7 +12,6 @@ const categories = [
   "Home",
   "Rent",
   "Savings",
-  "Investment",
   "Others",
 ];
 
@@ -39,11 +34,11 @@ const AddExpense = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    console.log({
+    await api.addExpense({
       category,
       amount: Number(amount),
       notes,
@@ -55,6 +50,7 @@ const AddExpense = () => {
     setNotes("");
     setPaymentMethod("");
     setErrors({});
+    navigate("/");
   };
 
   return (
