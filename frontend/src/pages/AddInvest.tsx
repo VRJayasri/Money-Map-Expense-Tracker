@@ -1,15 +1,11 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-type FormErrors = {
-  category?: string;
-  amount?: string;
-  paymentMethod?: string;
-};
+import { api } from "../api";
+import type { FormErrors } from "../types/Plans";
 
 const categories = ["FD", "SIP", "Mutual Funds", "Others"];
-const applications = ["Jupyter", "Uptox", "others"];
+const applications = ["Jupyter", "Uptox", "Others"];
 
 const AddInvest = () => {
   const [category, setCategory] = useState("");
@@ -32,22 +28,25 @@ const AddInvest = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
 
-    console.log({
+    await api.addInvestment({
       category,
+      app,
       amount: Number(amount),
       notes,
       paymentMethod,
     });
 
     setCategory("");
+    setApp("");
     setAmount("");
     setNotes("");
     setPaymentMethod("");
     setErrors({});
+    navigate("/");
   };
 
   return (

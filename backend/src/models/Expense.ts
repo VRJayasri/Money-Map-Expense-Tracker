@@ -1,27 +1,32 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Document, Schema } from "mongoose";
 
-const ExpenseSchema = new Schema(
+export interface IExpense extends Document {
+  userId: mongoose.Types.ObjectId;
+  category: string;
+  amount: number;
+  notes: string;
+  paymentMethod: "Online" | "In Hand";
+  month: number;
+  year: number;
+  date: Date;
+}
+
+const expenseSchema = new Schema<IExpense>(
   {
-    userId: { type: Schema.Types.ObjectId, ref: "User" },
-
+    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     category: {
       type: String,
-      enum: ["Food", "Accessories", "Travel", "Others"],
+      enum: ["Food","Travel","Accessories","Friend Loan","Home","Rent","Savings","Others"],
       required: true,
     },
-
     amount: { type: Number, required: true },
-    description: String,
-
-    paymentMethod: {
-      type: String,
-      enum: ["Online", "InHand"],
-      required: true,
-    },
-
-    month: { type: String, required: true }, 
+    notes: { type: String, default: "" },
+    paymentMethod: { type: String, enum: ["Online", "In Hand"], required: true },
+    month: { type: Number, required: true },   
+    year: { type: Number, required: true },
+    date: { type: Date, default: Date.now },
   },
   { timestamps: true }
 );
 
-export default model("Expense", ExpenseSchema);
+export default mongoose.model<IExpense>("Expense", expenseSchema);

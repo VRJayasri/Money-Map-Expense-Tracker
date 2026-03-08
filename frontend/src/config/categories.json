@@ -1,0 +1,66 @@
+[
+  {
+    "id": "food",
+    "label": "Food & Dining",
+    "icon": "🍽️",
+    "color": "#F97316",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "travel",
+    "label": "Travel",
+    "icon": "✈️",
+    "color": "#06B6D4",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "accessories",
+    "label": "Accessories",
+    "icon": "👜",
+    "color": "#EC4899",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "friends_loan",
+    "label": "Friends Loan",
+    "icon": "🤝",
+    "color": "#8B5CF6",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "home",
+    "label": "Home",
+    "icon": "🏠",
+    "color": "#10B981",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "rent",
+    "label": "Rent",
+    "icon": "🔑",
+    "color": "#EF4444",
+    "type": "expense",
+    "amount": ""
+  },
+  {
+    "id": "savings",
+    "label": "Savings",
+    "icon": "💰",
+    "color": "#F59E0B",
+    "type": "saving",
+    "amount": ""
+  },
+  {
+    "id": "investment",
+    "label": "Investment",
+    "icon": "📈",
+    "color": "#22C55E",
+    "type": "saving",
+    "amount": ""
+  }
+]

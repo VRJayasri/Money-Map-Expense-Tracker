@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Header from "../components/Header";
-import SideNav from "../components/SideNav";
+import Header from "./Header";
+import SideNav from "./SideNav";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const MainLayout = () => {

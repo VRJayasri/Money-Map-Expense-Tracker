@@ -1,104 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { api } from "../api";
+import MonthPickerModal from "../components/MonthPickerModal";
+import type { BudgetCategory } from "../types/Plans";
+import categoriesData from "../config/categories.json";
 
-interface BudgetCategory {
-  id: string;
-  label: string;
-  icon: string;
-  color: string;
-  type: "expense" | "saving";
-  amount: string;
-}
-
-const defaultCategories: BudgetCategory[] = [
-  {
-    id: "food",
-    label: "Food & Dining",
-    icon: "🍽️",
-    color: "#F97316",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "travel",
-    label: "Travel",
-    icon: "✈️",
-    color: "#06B6D4",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "accessories",
-    label: "Accessories",
-    icon: "👜",
-    color: "#EC4899",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "friends_loan",
-    label: "Friends Loan",
-    icon: "🤝",
-    color: "#8B5CF6",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "home",
-    label: "Home",
-    icon: "🏠",
-    color: "#10B981",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "rent",
-    label: "Rent",
-    icon: "🔑",
-    color: "#EF4444",
-    type: "expense",
-    amount: "",
-  },
-  {
-    id: "savings",
-    label: "Savings",
-    icon: "💰",
-    color: "#F59E0B",
-    type: "saving",
-    amount: "",
-  },
-  {
-    id: "investment",
-    label: "Investment",
-    icon: "📈",
-    color: "#22C55E",
-    type: "saving",
-    amount: "",
-  },
-];
+const defaultCategories = categoriesData as BudgetCategory[];
 
 export default function Planner() {
   const [categories, setCategories] =
     useState<BudgetCategory[]>(defaultCategories);
   const [income, setIncome] = useState<string>("");
-  const [mounted, setMounted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [savedMsg, setSavedMsg] = useState("");
+  const mounted = true;
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const total = categories.reduce((sum, cat) => {
-    const val = parseFloat(cat.amount) || 0;
-    return sum + val;
-  }, 0);
-
+  const total = categories.reduce(
+    (sum, cat) => sum + (parseFloat(cat.amount) || 0),
+    0,
+  );
   const expenses = categories
     .filter((c) => c.type === "expense")
     .reduce((sum, c) => sum + (parseFloat(c.amount) || 0), 0);
-
   const savingsTotal = categories
     .filter((c) => c.type === "saving")
     .reduce((sum, c) => sum + (parseFloat(c.amount) || 0), 0);
-
   const incomeVal = parseFloat(income) || 0;
   const balance = incomeVal - total;
   const balancePercent =
@@ -110,6 +36,33 @@ export default function Planner() {
     );
   };
 
+  const handleSavePlan = async (month: number, year: number) => {
+    if (!incomeVal) {
+      alert("Please enter your monthly income first.");
+      return;
+    }
+    setSaving(true);
+    setShowModal(false);
+
+    await api.saveBudgetPlan({
+      month,
+      year,
+      income: incomeVal,
+      categories: categories.map((cat) => ({
+        id: cat.id,
+        label: cat.label,
+        type: cat.type,
+        plannedAmount: parseFloat(cat.amount) || 0,
+      })),
+    });
+
+    setSaving(false);
+    setSavedMsg(
+      `Plan saved for ${new Date(year, month - 1).toLocaleString("default", { month: "long" })} ${year}!`,
+    );
+    setTimeout(() => setSavedMsg(""), 3000); // clear after 3s
+  };
+
   const expenseCategories = categories.filter((c) => c.type === "expense");
   const savingCategories = categories.filter((c) => c.type === "saving");
 
@@ -118,11 +71,10 @@ export default function Planner() {
       className="min-h-screen relative overflow-hidden"
       style={{
         background:
-          "linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)",
+          "linear-gradient(135deg, rgb(78,52,46) 0%, rgb(78,52,46) 50%, rgb(72,55,46) 100%)",
         fontFamily: "'DM Sans', 'Segoe UI', sans-serif",
       }}
     >
-      {/* Ambient background orbs */}
       <div
         className="absolute top-[-10%] left-[-5%] w-96 h-96 rounded-full opacity-20 blur-3xl pointer-events-none"
         style={{ background: "radial-gradient(circle, #7c3aed, transparent)" }}
@@ -140,7 +92,6 @@ export default function Planner() {
       />
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 py-10">
-        {/* Header */}
         <div
           className={`text-center mb-10 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
         >
@@ -164,11 +115,10 @@ export default function Planner() {
               letterSpacing: "-1px",
             }}
           >
-            Calculate Your Financial Plan
+            Calculate Your Financial Plan & Add to Your Planner
           </h1>
         </div>
 
-        {/* Income + Balance Summary Card */}
         <div
           className={`rounded-2xl p-6 mb-6 transition-all duration-700 delay-100 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{
@@ -178,7 +128,6 @@ export default function Planner() {
           }}
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-            {/* Income Input */}
             <div>
               <label
                 className="text-xs font-semibold tracking-widest uppercase mb-2 block"
@@ -213,8 +162,6 @@ export default function Planner() {
                 />
               </div>
             </div>
-
-            {/* Progress bar */}
             <div className="flex flex-col gap-2">
               <div className="flex justify-between text-sm">
                 <span style={{ color: "rgba(255,255,255,0.5)" }}>
@@ -248,8 +195,6 @@ export default function Planner() {
                 <span>₹{incomeVal.toLocaleString("en-IN")}</span>
               </div>
             </div>
-
-            {/* Balance */}
             <div className="text-center md:text-right">
               <p
                 className="text-xs font-semibold tracking-widest uppercase mb-1"
@@ -270,9 +215,7 @@ export default function Planner() {
           </div>
         </div>
 
-        {/* Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Expenses Section */}
           <div
             className={`transition-all duration-700 delay-200 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           >
@@ -297,7 +240,6 @@ export default function Planner() {
                 {expenses.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </span>
             </div>
-
             <div className="flex flex-col gap-3">
               {expenseCategories.map((cat, i) => (
                 <CategoryRow
@@ -311,7 +253,6 @@ export default function Planner() {
             </div>
           </div>
 
-          {/* Savings Section */}
           <div
             className={`transition-all duration-700 delay-300 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           >
@@ -338,7 +279,6 @@ export default function Planner() {
                 })}
               </span>
             </div>
-
             <div className="flex flex-col gap-3">
               {savingCategories.map((cat, i) => (
                 <CategoryRow
@@ -351,7 +291,7 @@ export default function Planner() {
               ))}
             </div>
 
-            {/* Breakdown Card */}
+            {/* Breakdown (unchanged) */}
             <div
               className="mt-6 rounded-2xl p-5"
               style={{
@@ -371,7 +311,7 @@ export default function Planner() {
                 return (
                   <div key={cat.id} className="mb-3">
                     <div className="flex justify-between text-xs mb-1">
-                      <span style={{ color: "rgba(255,255,255,0.6)" }}>
+                      <span style={{ color: "#ffff" }}>
                         {cat.icon} {cat.label}
                       </span>
                       <span style={{ color: cat.color, fontWeight: 700 }}>
@@ -380,7 +320,7 @@ export default function Planner() {
                     </div>
                     <div
                       className="w-full h-1 rounded-full overflow-hidden"
-                      style={{ background: "rgba(255,255,255,0.07)" }}
+                      style={{ background: "rgb(78,52,46)" }}
                     >
                       <div
                         className="h-full rounded-full transition-all duration-700"
@@ -394,7 +334,32 @@ export default function Planner() {
           </div>
         </div>
 
-        {/* Total Footer */}
+        <div className="mt-6 flex items-center gap-4">
+          <button
+            onClick={() => setShowModal(true)}
+            disabled={saving}
+            className="inline-flex items-center gap-2 rounded-full bg-violet-100 px-6 py-2.5 text-sm font-medium text-violet-700 ring-1 ring-violet-200 transition-all duration-200 hover:bg-violet-200 hover:ring-violet-300 active:scale-95 disabled:opacity-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+            >
+              <path d="M12 5v14M5 12h14" strokeLinecap="round" />
+            </svg>
+            {saving ? "Saving..." : "Add to planner"}
+          </button>
+
+          {savedMsg && (
+            <span className="text-sm font-medium text-green-400 animate-pulse">
+              ✓ {savedMsg}
+            </span>
+          )}
+        </div>
+
         <div
           className={`mt-6 rounded-2xl p-6 transition-all duration-700 delay-500 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{
@@ -484,6 +449,13 @@ export default function Planner() {
           Plan your finances. Own your future. ✦
         </p>
       </div>
+
+      {showModal && (
+        <MonthPickerModal
+          onConfirm={handleSavePlan}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }
@@ -500,7 +472,6 @@ function CategoryRow({
   onChange: (id: string, value: string) => void;
 }) {
   const [focused, setFocused] = useState(false);
-
   return (
     <div
       className="group flex items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-500"
@@ -516,7 +487,6 @@ function CategoryRow({
         transform: mounted ? "translateY(0)" : "translateY(10px)",
       }}
     >
-      {/* Icon bubble */}
       <div
         className="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0 transition-transform duration-200 group-hover:scale-110"
         style={{
@@ -526,16 +496,12 @@ function CategoryRow({
       >
         {cat.icon}
       </div>
-
-      {/* Label */}
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-white truncate">{cat.label}</p>
         <p className="text-xs" style={{ color: cat.color, opacity: 0.8 }}>
           {cat.type === "expense" ? "Expense" : "Wealth building"}
         </p>
       </div>
-
-      {/* Amount Input */}
       <div className="relative w-36 flex-shrink-0">
         <span
           className="absolute left-3 top-1/2 -translate-y-1/2 text-sm font-bold transition-colors duration-200"
